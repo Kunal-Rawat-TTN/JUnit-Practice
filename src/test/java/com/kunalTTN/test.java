@@ -12,8 +12,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 public class test {
     @Test
@@ -58,4 +57,29 @@ public class test {
         assertThat(filteredTodos.size(), is(2));
 
     }
+    @Test
+    public void testWithMock_usingBDD_Verify()
+    {
+        //Given - Setup
+        TodoService todoService= mock(TodoService.class);
+        List<String> todos = Arrays.asList("List of Spring", "Learn Spring", "Bootcamp","Bootcamp");
+        given(todoService.retrieveTodos("Dummy")).willReturn(todos);
+        TodoBusinessImpl todoBusiness = new TodoBusinessImpl(todoService);
+
+        // When - method call
+        todoBusiness.deleteTodosNotRelatedToSpring("Dummy");
+
+        //Then - Asserts
+//        verify(todoService).deleteTodo("Bootcamp");
+
+//        Will fail
+//        verify(todoService,times(1)).deleteTodo("Bootcamp");
+
+        verify(todoService,times(2)).deleteTodo("Bootcamp");
+        verify(todoService,atLeastOnce()).deleteTodo("Bootcamp");
+        verify(todoService,atLeast(1)).deleteTodo("Bootcamp");
+        verify(todoService,never()).deleteTodo("List of Spring");
+
+    }
+
 }

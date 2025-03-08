@@ -10,4 +10,8 @@ public class TodoServiceStub implements TodoService {
     public List<String> retrieveTodos(String user) {
         return List.of("List of Spring", "Learn Spring", "Bootcamp");
     }
+
+    @Override
+    public void deleteTodo(String Todo) {
+    }
 }
