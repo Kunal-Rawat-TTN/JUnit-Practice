@@ -4,6 +4,7 @@ package com.kunalTTN;
 import com.kunalTTN.business.TodoBusinessImpl;
 import com.kunalTTN.service.TodoService;
 import org.junit.Test;
+import org.mockito.ArgumentCaptor;
 
 import java.util.Arrays;
 import java.util.List;
@@ -88,6 +89,27 @@ public class test {
 
         verify(todoService,never()).deleteTodo("List of Spring");
         then(todoService).should(never()).deleteTodo("List of Spring");
+
+    }
+
+    @Test
+    public void testWithMock_usingBDD_capturingArgument()
+    {
+        //Given - Setup
+        TodoService todoService= mock(TodoService.class);
+        List<String> todos = Arrays.asList("List of Spring", "Learn Spring", "Bootcamp");
+        given(todoService.retrieveTodos("Dummy")).willReturn(todos);
+        TodoBusinessImpl todoBusiness = new TodoBusinessImpl(todoService);
+
+        //Declare Argument Captor
+        ArgumentCaptor<String> argumentCaptor = ArgumentCaptor.forClass(String.class);
+
+        todoBusiness.deleteTodosNotRelatedToSpring("Dummy");
+
+        //Define Argument Captor
+        verify(todoService,times(1)).deleteTodo(argumentCaptor.capture());
+        assertThat(argumentCaptor.getValue(),is("Bootcamp"));
+//        then(todoService).should(times(1)).retrieveTodos(argumentCaptor.capture());
 
     }
 
