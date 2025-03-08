@@ -12,6 +12,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.*;
 
 public class test {
@@ -71,14 +72,22 @@ public class test {
 
         //Then - Asserts
 //        verify(todoService).deleteTodo("Bootcamp");
+//        then(todoService).should().deleteTodo("Bootcamp");
 
 //        Will fail
 //        verify(todoService,times(1)).deleteTodo("Bootcamp");
 
         verify(todoService,times(2)).deleteTodo("Bootcamp");
+        then(todoService).should(times(2)).deleteTodo("Bootcamp");
+
         verify(todoService,atLeastOnce()).deleteTodo("Bootcamp");
+        then(todoService).should(atLeastOnce()).deleteTodo("Bootcamp");
+
         verify(todoService,atLeast(1)).deleteTodo("Bootcamp");
+        then(todoService).should(atLeast(1)).deleteTodo("Bootcamp");
+
         verify(todoService,never()).deleteTodo("List of Spring");
+        then(todoService).should(never()).deleteTodo("List of Spring");
 
     }
 
